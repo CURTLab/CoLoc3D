@@ -1,4 +1,4 @@
-function [xi,yi,zi,ini,sxi,syi,szi,fri,lasti,dat,colhead]=E_data_extraction_index(colhead,dat)
+function [xi,yi,zi,ini,sxi,syi,szi,fri,lasti,colhead,dat]=E_data_extraction_index(colhead,dat)
 %%%%%%%%%%%%%%%%%%%% column index recognition %%%%%%%%%%%%%%%%%%%%%%%
 L=size(dat,1);
 M=size(dat,2);
@@ -47,19 +47,23 @@ t = strcmpi('x',colhead);
   ini=find(t>0); 
   if isempty(ini)==1
       hh=msgbox('"intensity" header could not be found. Intensity will be default generated');
-      u=normrnd(3100,750,[L,1]);
-      u=max(u,500);
+      u=normrnd(7100,1050,[L,1]);
+      u=max(u,400);
       colhead(:,end+1)={'intensity'};
       dat(:,end+1)=u;
       ini=size(colhead,2);
   end
+
+
+  
+ 
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%t = strcmpi('PA',colhead);
+%t = strcmpi('PA',colhead);
  t = strcmpi('PAX',colhead);
  sxi=find(t>0);
   if isempty(sxi)==1
       hh=msgbox('"pa" header could not be found. The point xy-accuracy will be default generated');
-      u=normrnd(30,6,[L,1]);
+      u=normrnd(44,8,[L,1]);
       u=max(u,5);
       colhead(:,end+1)={'PA'};
       dat(:,end+1)=u;
@@ -69,12 +73,12 @@ t = strcmpi('x',colhead);
  t = strcmpi('PAY',colhead);
  syi=find(t>0);
   if isempty(syi)==1
-      hh=msgbox('"pa" header could not be found. The point xy-accuracy will be default generated');
-      u=normrnd(30,6,[L,1]);
+      hh=msgbox('"pay" header could not be found. The point xy-accuracy will be default generated');
+      u=normrnd(44,8,[L,1]);
       u=max(u,5);
-      colhead(:,end+1)={'PA'};
+      colhead(:,end+1)={'PAY'};
       dat(:,end+1)=u;
-      sxi=size(colhead,2);
+      syi=size(colhead,2);
   end
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
@@ -82,7 +86,7 @@ t = strcmpi('x',colhead);
  szi=find(t>0);
   if isempty(szi)==1
      hh= msgbox('"paz" header could not be found. The point z-accuracy will be default generated');
-      u=normrnd(180,35,[L,1]);
+      u=normrnd(80,15,[L,1]);
       u=max(u,55.5);
       colhead(:,end+1)={'PAZ'};
       dat(:,end+1)=u;
@@ -103,5 +107,5 @@ t = strcmpi('x',colhead);
       fri=size(colhead,2);
   end
   lasti=size(colhead,2);
-
+ 
 end

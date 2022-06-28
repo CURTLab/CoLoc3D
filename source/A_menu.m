@@ -6,9 +6,11 @@ lista={'CALIBRATION GRID based',...               %task 1
 'CALIBRATION INTERPOLATION based',...             %task 2 
 'REGISTRY GRID based',...                         %task 3
 'REGISTRY INTERPOLATION based',...                %task4
-'COLLOCATION',...                                 %task 5
-'CLOSE All FIGURES ',...                          %task 6
-'EXIT'};                                          %task 7               
+'COLLOCATION',...                              %task 5
+'EXAMPLE STATISTIC: PDF ',...                   %task 6
+'CLOSE All FIGURES ',...                          %task 7
+'IMPORT DATA FROM EXCEL ',...                     %task 8
+'EXIT'};                                          %task 9               
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -3,6 +3,7 @@ clc
 clear
 close all
 load('distan.mat');
+
 D=table2array(Distance);
 D=unique(D,'rows');
 e0=find(D(:,3)<=0);
@@ -21,7 +22,7 @@ ve=0:delta:12800;
 
 nrBins=1000;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+ whitebg('w');
  hs = histogram(d_nint,'BinEdges',ve,'Normalization','pdf','FaceColor',[.0  1.0 .0],'Edgecolor','none');
  hold on
 
@@ -37,8 +38,9 @@ nrBins=1000;
  py1=hs1.BinCounts;
  dat2=hs1.Data;
  pyint=py1/sum(py1*delta);
- %close
  
+ whitebg('w');
+ close all
  figure
  bar(px(1:end-1),pynint,'Facecolor','g','EdgeColor','none')
  hold on 

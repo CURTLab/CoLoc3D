@@ -29,12 +29,12 @@ dat2N=dat2;
 zn=dat2(:,zi2);
 xn=gfx(zn);
 yn=gfy(zn);
-dat2N(:,xi2)=dat2N(:,xi2)+xn;
-dat2N(:,yi2)=dat2N(:,yi2)+yn;
+dat2N(:,xi2)=dat2N(:,xi2)+xn; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dat2N(:,yi2)=dat2N(:,yi2)+yn; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-  
-    
-    
+ figure 
+ plot(zn,xn)  
+ title('Shift in X-axis after registration')
     
     
     
@@ -47,16 +47,27 @@ dat2N(:,yi2)=dat2N(:,yi2)+yn;
     whitebg('k')
     set(gcf,'Position',[scrsz(1)+200,scrsz(2)+70, scrsz(3)*0.6,scrsz(4)*0.83]);
 
-    plot(dat2(:,xi2),dat2(:,yi2),'+b')
+    plot(dat2(:,xi2),dat2(:,yi2),'.b')
     hold on
    
- 
+    grid on
     plot(dat2N(:,xi2),dat2N(:,yi2),'.g')
     pause(0.2)
-    suptitle('Color2 after registration (blue old point, green neu point)')
+    suptitle('Color2 (mobile) after registration 2D view (blue old point, green neu point)')
    
 
-  
+ 
+    figure(1522)
+    whitebg('k')
+    set(gcf,'Position',[scrsz(1)+200,scrsz(2)+70, scrsz(3)*0.6,scrsz(4)*0.83]);
+
+    plot3(dat2(:,xi2),dat2(:,yi2),dat2(:,zi2),'.b')
+    hold on
+    axis image
+    grid on
+    plot3(dat2N(:,xi2),dat2N(:,yi2),dat2N(:,zi2),'.g')
+    pause(0.1)
+    title('Color2 (mobile) after registration 3D view (blue old point, green neu point)')
     
     
 po1=dat1(:,[xi1,yi1,zi1]);

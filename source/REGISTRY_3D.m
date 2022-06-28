@@ -1,28 +1,3 @@
-% MIT License
-% 
-% Copyright (c) 2022 Jaroslaw Jacak, 
-% Medical Engineering Dept. Upper Austria University od Applied Sciences, Linz, Austria
-% 
-% Permission is hereby granted, free of charge, to any person obtaining a copy
-% of this software and associated documentation files (the "Software"), to deal
-% in the Software without restriction, including without limitation the rights
-% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-% copies of the Software, and to permit persons to whom the Software is
-% furnished to do so, subject to the following conditions:
-% 
-% The above copyright notice and this permission notice shall be included in all
-% copies or substantial portions of the Software.
-% 
-% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-% SOFTWARE.
-
-addpath('source')
-
 clear 
 close all
 clc
@@ -33,6 +8,10 @@ uiwait(msgbox('SELECT DISPLACEMENT FIELD','modal'));
 fullpath = fullfile(dirname,pathname);
 load(fullpath);
 
+
+
+
+
 plot_displacement(grid_size,xg1,yg1,sizeMcolor1(1),sizeMcolor1(2),TO);
 stop1;
 Data_Load_1;
@@ -42,6 +21,7 @@ maxXdat1=max(dat1(:,xi1))+ rama; %+ rama;
 maxYdat1=max(dat1(:,yi1))+ rama;
 maxXdat2=max(dat2(:,xi2))+ rama;
 maxYdat2=max(dat2(:,yi2))+ rama;
+
 
 xgr=[];
 ygr=[];
@@ -91,7 +71,24 @@ for i = 1:grid_size
     plot(dm(:,xi2),dm(:,yi2),'or','markersize',2,'markerfacecolor','r')
     plot(dat2N(:,xi2),dat2N(:,yi2),'.g')
     pause(0.1)
-    title('Color2 after translacji (blue old point, green neu point)')
+    title('Color2 after translacji 2D view (blue old point, green neu point)')
+
+    figure(1511)
+    set(gcf,'Position',[scrsz(1)+200,scrsz(2)+70, scrsz(3)*0.6,scrsz(4)*0.83]);
+
+    plot3(dat2(:,xi2),dat2(:,yi2),dat2(:,zi2),'.b')
+    hold on
+   % plot_grid(grid_size,xgr,ygr)
+    grid on
+    %plot(dm(:,xi2),dm(:,yi2),'or','markersize',2,'markerfacecolor','r')
+    plot3(dat2N(:,xi2),dat2N(:,yi2),dat2N(:,zi2),'.g')
+    axis image
+    pause(0.01)
+    title('Color2 after translacji 3D view (blue old point, green neu point)')
+    
+   
+
+
     end
  end
 end
@@ -111,5 +108,11 @@ tt=[dirname2,'registred_grid_',num2str(day(datetime)),'_',num2str(month(datetime
 %save(tt,'colhead2','dat2N','exname2','grid_size','segxi2','segyi2','xg2', 'xgr', 'yg2','par');
 save(tt,'par');
 
+
+
 clear( 'dm','pm','pmn','R','t', 'V', 'en', 'ep', 'k' ,'i','po1' ,'po2')
 clear('button', 'data1', 'data2',  'ih', 'status')
+
+
+
+
