@@ -64,6 +64,8 @@ clc
 clear
 close all
 
+addpath('source')
+
 Figure_start;
 
 try
