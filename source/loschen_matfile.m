@@ -1,0 +1,2 @@
+
+    delete('col*.mat');

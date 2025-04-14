@@ -137,13 +137,14 @@ menuFig = figure( 'WindowStyle', 'normal', ...  %%%'modal'
                   'Units'       ,MenuUnits, ...
                   'Visible'     ,'on', ...
                   'NumberTitle' ,'off', ...
-                  'Name'        ,'CoLoc3D-1.0',...           %%%getString(message('MATLAB:uistring:menu:MENU')), ...
+                  'Name'        ,'CALMv5',...           %%%getString(message('MATLAB:uistring:menu:MENU')), ...
                   'Resize'      ,'off', ...
                   'Colormap'    ,[], ...
                   'MenuBar'     ,'none',...
                   'ToolBar' 	,'none' ...
                    );
 WinOnTop(menuFig,true);
+
 %------------------------------------------------------------------------
 % Add generically-sized header text with same background color as figure
 %------------------------------------------------------------------------
@@ -259,7 +260,7 @@ textWide = winWide - 3*uiBorder;
 % Move Header text into correct position near the top of figure
 set( hText, ...
      'Position', [ uiBorder winHigh-uiBorder-0.7*textHigh textWide 1.1*textHigh ],...
-     'FontSize',15,'FontWeight','bold');
+     'FontSize',14,'FontWeight','bold');
 
 %=========================================================================
 % ACTIVATE
@@ -280,13 +281,13 @@ waitfor(menuFig,'userdata')
 %------------------------------------------------------------------------
 if ishghandle(menuFig)
     k = get(menuFig,'UserData');
-    whitebg('w');
+    %whitebg('w');
  delete(menuFig)
 
 else
     % The figure was deleted without a selection. Return 0.
     k = 0;
-    whitebg('w');
+     % whitebg('w');
 end
 
 %%#########################################################################

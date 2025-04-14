@@ -1,6 +1,6 @@
 
 
-hull_distance=hull_distance_stan(:,2);
+hull_distance=hull_distance_stan(:,3); %%%%%%%%% punkt 2 centroid 3
 hull_distance=sort(hull_distance,'asc');
 eee=find(hull_distance<=0,01,'last');
 clust_overlap=round((eee/size(hull_distance,1))*100,2);

@@ -1,14 +1,12 @@
-% CoLoc3D is the tools for  calibration, registration and co-localization of
-% 3D dual-color single molecule localization.
-%
-% CoLoc3D contains many MatLab functions and scripts that allow calibration, 
-% registration and co-localization of dual-color single molecule images 
-% (in two channels).
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   In this prototype system, the input data structure is limited to specified 
-%   matlab format. Data set must be of type structure array named "par". The 
-%   structure must contain the fields:
+%CoLoc3D is the tools for  calibration, registration and co-localization of
+%3D dual-color single molecule localization.
+
+% CoLoc3D contains many MatLab functions and scripts that allow calibration, registration and
+% co-localization of dual-color single molecule images (in two channels).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   In this prototype system, the input data structure is limited to specified matlab format.
+%   Data set must be of type structure array named "par". The structure must contain 
+%   the fields:
 %   par.pkmatrix – array of numerical data with row-measurements and
 %   columns- data coordinates.
 %   par.pkdesc - contains two cells par.pkdesc.desc, and par.pkdesc.units:
@@ -33,24 +31,23 @@
 %
 %  In the absence of these columns they will be automatically generated 
 %  with default values typical for this type of nanoscopic samples.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% MIT License
-% 
-% Copyright (c) 2022 Jaroslaw Jacak, 
+%
+
+
+
+% Copyright 2022 Jaroslaw Jacak, 
 % Medical Engineering Dept. Upper Austria University od Applied Sciences, Linz, Austria
-% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This code may be freely used and distributed, so long as it maintains this copyright line
 % Permission is hereby granted, free of charge, to any person obtaining a copy
 % of this software and associated documentation files (the "Software"), to deal
 % in the Software without restriction, including without limitation the rights
 % to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 % copies of the Software, and to permit persons to whom the Software is
 % furnished to do so, subject to the following conditions:
-% 
 % The above copyright notice and this permission notice shall be included in all
 % copies or substantial portions of the Software.
-% 
 % THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 % IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 % FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -58,18 +55,19 @@
 % LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 % OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 % SOFTWARE.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc
-clear
+%clear
 close all
-
-addpath('source')
-
+warning off all
 Figure_start;
 
-try
-	A_start;
-catch
-	clc
-end
+%try
+    START_CALIBRATION;
+%catch
+%clc
+%end

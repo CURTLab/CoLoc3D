@@ -1,7 +1,7 @@
 
 function TT=z_TF_full(TT)
 
-e=find(TT(1,:)==0);
+e=find(TT(1,:)>0);
 if isempty(e)
     TT=TT;
 else

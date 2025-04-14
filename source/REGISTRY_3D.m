@@ -83,7 +83,7 @@ for i = 1:grid_size
     %plot(dm(:,xi2),dm(:,yi2),'or','markersize',2,'markerfacecolor','r')
     plot3(dat2N(:,xi2),dat2N(:,yi2),dat2N(:,zi2),'.g')
     axis image
-    pause(0.01)
+   % pause(0.01)
     title('Color2 after translacji 3D view (blue old point, green neu point)')
     
    

@@ -1,6 +1,8 @@
 clc
+crea.Interpreter='tex';
+crea.WindowStyle = 'modal';
 %%%%%%%%%%%%%%%%%%%%%%%% open file 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-uiwait(msgbox('SELECT ACTIVE (MOBILE) DATA: Color2','modal')); 
+uiwait(msgbox('\fontsize{12}SELECT ACTIVE (MOBILE) DATA: Color2',crea)); 
 
 [pathname,dirname] = uigetfile('..\*.mat');
 fullpath = fullfile(dirname,pathname);

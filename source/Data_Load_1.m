@@ -1,8 +1,11 @@
 clc
 close all
 %clear
+
+crea.Interpreter='tex';
+crea.WindowStyle = 'modal';
 %%%%%%%%%%%%%%%%%%%%%%%%% open file %%%%%%%%%%%%%%%%%%%%%%%%%%%
-uiwait(msgbox('SELECT PASSIVE (FIX) DATA: Color1','modal')); 
+uiwait(msgbox('\fontsize{10}SELECT PASSIVE (FIX) DATA: Color1. Take a larger sample',crea)); 
 
 
 [pathname,dirname] = uigetfile('..\*.mat');

@@ -25,7 +25,7 @@ titleypos  = .95;
 fs = get(gcf,'defaultaxesfontsize')+4;
 
 % Fudge factor to adjust y spacing between subplots
-fudge=1;
+fudge=2;
 
 haold = gca;
 figunits = get(gcf,'units');

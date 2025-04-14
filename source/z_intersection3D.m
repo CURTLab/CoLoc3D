@@ -13,28 +13,35 @@ KNN=min(M1,3);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%FIG PARAMETER%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-pozycja1=[0.05, 0.3,0.9,0.65];
+pozycja1=[0.15, 0.3,0.7,0.60];
 pozycja2= [0.15, 0.05,0.7,0.15];
 scrsz = get(0,'ScreenSize');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 figure(200)
 whitebg('k')
 set(gcf,'Position',[scrsz(1)+600,scrsz(2)+70, scrsz(3)*0.6,scrsz(4)*0.83]);
+      title(['\rm STANDARD Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 ',num2str(round(RRR,1)),' nm'])
+
 subplot('position',pozycja1)
 grid on
 plot3(pos1(:,1),pos1(:,2),pos1(:,3),'.b','markersize',1.5)
 hold on
 plot3(pos2(:,1),pos2(:,2),pos2(:,3),'.r','markersize',1.5)
 view(2)
-axis image
+%axis image
 hh=text(2*min(pos1(:,1)),4*min(pos1(:,2)), ['Cluster ',num2str(5),'/',num2str(M2)],'color','k');
 xlim([min(pos1(:,1)),max(pos1(:,1))+1000])
+ylim([min(pos1(:,2)),max(pos1(:,2))+1000])
 subplot('position',pozycja2)
 hold on
 grid on
 xlim([0,M2+1])
 %ylim([0,110])
-title('Cluster collocation size in %')
+title(['\rm STANDARD Collocation size in %. Sample 1 ',exname1,',  Sample 2 ',exname2])
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for lj=1:M1
@@ -65,7 +72,7 @@ end
 
 
 for i=1: M2
-disp(['cluster channel1 ',num2str(i),'/',num2str(M2)])
+disp(['cluster channel2 ',num2str(i),'/',num2str(M2)])
 overlap=0;
 eo=find(klaster2(:,1)==i);
 hull2=pos2(eo,:);
@@ -120,6 +127,8 @@ end
 
 
 figure(200) 
+      title(['\rm STANDARD Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 ',num2str(round(RRR,1)),' nm'])
 
 subplot('position',pozycja1)
 grid on
@@ -186,12 +195,19 @@ huldist=1000000000000000000;
   end
    
     PU=[];
+poly2=unique(poly2,'rows');
+poly1=unique(poly1,'rows');
+liczba1=size(poly1,1);
+liczba2=size(poly2,1);
+
+ if liczba1>3 && liczba2>3
+       
     in =  inhull(poly2,poly1);
     in2 = inhull(hull2,hull1);
     ein2=find(in2==1);             % points hull-pos2 in hull-pos1
     INTER2=hull2(ein2,:);
     INTER2=unique(INTER2,'rows');
-
+    %disp(['Number of intersection  points = ',num2str(size(INTER2,1))])
     e=find(in==1);
     PU=[PU',poly2(e,:)']';
     in = inhull(poly1,poly2);
@@ -199,20 +215,31 @@ huldist=1000000000000000000;
     PU=[PU',poly1(e,:)']';
     ps=PU;
     ps=unique(ps,'rows');
+  end %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     if isempty(ps)==0 && size(ps,1)>3
           disp('INTERSECTION')
+          disp(['Number of intersection  points = ',num2str(size(INTER2,1))])
           overlap=1;
           try
               pp=intersectionHull('vert',poly2,'vert',poly1);
           catch
-              bm=max(poly2);  
+              bm=max(poly2)*1.0;  %%%%%%%%%%%%%%%%%
               poly2=[poly2',bm']'; 
-              pp=intersectionHull('vert',poly2,'vert',poly1);
+                      try
+                      pp=intersectionHull('vert',poly2,'vert',poly1);
+                      catch
+                          pp.lcon={[] [] [] []};
+                          pp.vert=ps;
+                          disp('INTERSECTION INSIDE')
+                      end
           end
     
               P=pp.vert;
-              PCOL_1=[PCOL_1',P']';
+              %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+              if numel(P)>3
+              PCOL_1=[PCOL_1',hull2']';
+              %PCOL_1=[PCOL_1',P']';
               [C3,v3] = convhulln(P);
                stat=1;
                colocatv(1,1)=i;
@@ -222,14 +249,17 @@ huldist=1000000000000000000;
                colocatv(6,1)= v1;
                colocatv(5,1)= (v3/(v2+v1-v3))*100;
                colocat=[colocat,colocatv];
-    
+              end
         figure(200)
         subplot('position',pozycja1)
         grid on
-        plot3(ps(:,1),ps(:,2),ps(:,3),'ow','markerfacecolor','r','markersize',2)
+        plot3(ps(:,1),ps(:,2),ps(:,3),'ow','markerfacecolor','r','markersize',3)
         hold on
         if exist('C2','var')==1
         trisurf(C2,hull2(:,1),hull2(:,2),hull2(:,3),'FaceColor','m','FaceAlpha',0.4)
+       title(['\rm STANDARD Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 ',num2str(round(RRR,1)),' nm'])
+
         end
         hold on
         if exist('C3','var')==1
@@ -238,7 +268,7 @@ huldist=1000000000000000000;
         
         end
         subplot('position',pozycja2)
-        bar(i,(v3/(v2+v1-v3))*100,'r')
+        bar(i,(v3*2/(v2+v1-v3))*100,'r')
         
    elseif isempty(ps)==0 && size(ps,1)<=3  
          
@@ -251,8 +281,9 @@ huldist=1000000000000000000;
             v3=v2;
          end
          
-         PCOL_1=[PCOL_1',INTER2']';
-         
+         PCOL_1=[PCOL_1',hull2']';
+          disp(['Number of intersection  points = ',num2str(size(INTER2,1))])
+         % PCOL_1=[PCOL_1',PU']';
            colocatv(1,1)=i;
            colocatv(2,1)=e1;
            colocatv(3,1)=v2;
@@ -263,16 +294,18 @@ huldist=1000000000000000000;
            stat=1;    
         figure(200)
         subplot('position',pozycja1)
-        plot3(ps(:,1),ps(:,2),ps(:,3),'ow','markerfacecolor','m','markersize',2)
+        plot3(ps(:,1),ps(:,2),ps(:,3),'ow','markerfacecolor','m','markersize',3)
         hold on
         if exist('C3','var')==1
         trisurf(C3,ps(:,1),ps(:,2),ps(:,3),'FaceColor','w','FaceAlpha',0.8)
         end
         hold on
         hte=[ps',ps(1,:)']';
-        plot3(hte(:,1),hte(:,2),hte(:,3),'-ow','markersize',2,'markerfacecolor','r','linewidth',2)
+        plot3(hte(:,1),hte(:,2),hte(:,3),'-ow','markersize',3,'markerfacecolor','r','linewidth',2)
         subplot('position',pozycja2)
-        bar(i,(v3/(v2+v1-v3))*100,'r')      
+        bar(i,(v3*2/(v2+v1-v3))*100,'r') 
+        title(['\rm STANDARD Collocation size in %. Sample 1 ',exname1,'  Sample 2 ',exname2])
+
   elseif isempty(ps)
       C3=[];
       sqq=pdist2(hull2,hull1);
@@ -283,7 +316,7 @@ huldist=1000000000000000000;
       poa1=sqrt((2*poax1^2+poaz1^2)/3);
 
      
-      if sqq < 1.1*(poa1+poa2)
+      if sqq < 1.05*(poa1+poa2)
            disp('INTERSECTION DISTANCE')
            overlap=1;
            colocatv(1,1)=i;
@@ -293,10 +326,16 @@ huldist=1000000000000000000;
            colocatv(5,1)= min(v1,v2)/(v2+v1)*100;
            colocatv(6,1)= v1;
            colocat=[colocat,colocatv];
+
+           PCOL_1=[PCOL_1',hull2']';
+           disp(['Number of intersection  points = ',num2str(size(hull2,1))])
    figure(200)
         subplot('position',pozycja1)
-        plot3(hull2(:,1),hull2(:,2),hull2(:,3),'ow','markerfacecolor','r','markersize',2)
+        plot3(hull2(:,1),hull2(:,2),hull2(:,3),'ow','markerfacecolor','r','markersize',3)
         hold on
+        title(['\rm STANDARD Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 ',num2str(round(RRR,1)),' nm'])
+
         if exist('C2','var')==1
         trisurf(C2,hull2(:,1),hull2(:,2),hull2(:,3),'FaceColor','m','FaceAlpha',0.4)
         end
@@ -304,7 +343,9 @@ huldist=1000000000000000000;
         trisurf(C1,hull1(:,1),hull1(:,2),hull1(:,3),'FaceColor','c','FaceAlpha',0.4)
         end
         subplot('position',pozycja2)
-        bar(i,colocatv(5,1),'r')      
+        bar(i,colocatv(5,1),'r')  
+      title(['\rm STANDARD Collocation size in %. Sample 1 ',exname1,' Sample 2 ',exname2])
+
        end
    end
      if overlap==1
@@ -316,9 +357,18 @@ huldist=1000000000000000000;
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 delete(hh)
 hh=text(2*min(pos1(:,1))+100,4*min(pos1(:,2))+1000, ['Cluster ',num2str(i),'/',num2str(M2)],'color','r');
-title('Cluster collocations. White - clusters of sample 2 collocated to sample 1')
  end
 end
+
+
+if isempty(colocat)==1
+crea.Interpreter='tex';
+crea.WindowStyle = 'modal';
+uiwait(msgbox(['\fontsize{14}For Radius ',num2str(round(RRR)),' nm  no collocation found. Try a larger radius'],crea))
+Answer_coll_typ;
+end
+
+
 
 
 colocat=colocat';
@@ -327,7 +377,7 @@ for L=1:size(colocat,1)
    diamete(L,1)=2*nthroot((3*diamete(L,1)/(4*pi)),3);
    diamete(L,2)=2*nthroot((3*diamete(L,2)/(4*pi)),3);
 end   
-   
+kontrole_stan;   
    
 tt=['col_prec_alph_',num2str(alpha),'.mat'];
 save(tt,'colocat','avg_min_dist1','avg_min_dist2','PCOL_1','M1','M2');
@@ -339,4 +389,7 @@ collocation_both_methods;
 A_excel_stand;
 A_excel_distance_stan;
 
+msgbox('\fontsize{12}  The results of the collocation are saved in the current directory in excel format with prefix COLOCx',crea)
+
 clear('C1','C2','C3','C000');
+%putzen;

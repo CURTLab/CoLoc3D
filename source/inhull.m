@@ -72,6 +72,7 @@ end
 
 % was the convex hull supplied?
 if (nargin<3) || isempty(tess)
+
   tess = convhulln(xyz);
 end
 [nt,c] = size(tess);

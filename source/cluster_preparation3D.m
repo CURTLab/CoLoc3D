@@ -16,12 +16,13 @@ function [klaster,centroid,kcentroid,avg_min_dist,N]=cluster_preparation3D(pos,a
     tic
     disp(' Main-clusters calculation: (DBSCAN), please wait')
   
-    [cl,centroid]=DBSCAN_neu(pdat,avg_min_dist,alpha,4,8,N);
+    %[cl,centroid]=DBSCAN_neu(pdat,avg_min_dist,alpha,4,8,N);
+     [cl,centroid]=DBSCAN_fast(pdat,avg_min_dist,alpha,4,8,N);
     toc
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     kla=0;
-     if kla==1
+    if kla==1
       
     disp('Standard-clusters calculation: (Hierarchical clustering), please wait')    
     rad=max(avg_min_dist*alpha*4,500);

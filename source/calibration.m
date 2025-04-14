@@ -103,7 +103,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 msee=mse_voll(MPO,data1(:,[xi,yi,zi]));
 disp(['MSE = ',num2str(msee)])
-%TO=z_TF_full(TO);
+TOO=z_TF_full(TO);
 plot_calib;
 plot_displacement3d(grid_size,xg1,yg1,sizeMcolor1(1),sizeMcolor1(2),TO)
 plot_displacement(grid_size,xg1,yg1,sizeMcolor1(1),sizeMcolor1(2),TO)

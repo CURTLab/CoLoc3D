@@ -1,11 +1,13 @@
 clc
-alpha=1.6;
+%alpha=2;
+disp(['Alpha = ',num2str(alpha)])
 
-clear('C1','C2','C3','C000','DISTANCEFast','Cl');
+clear('C1','C2','C3','C000','DISTANCEFast','Cl','coloc');
 hull_distance=[];
 cid2centr=[];
-cid1centr=[];
+cid1centr=[]; 
 coloc=[];
+ve=[];
 PCOL_2=[];
 
 POSY1=pos1;
@@ -25,16 +27,19 @@ pos=[pos1',pos2']';
 POSY=[POSY1',POSY2']';
 N=size(pos,1);
 
+ %[amdsens,~]=estimation_min_dist(pos);
+
 disp('Distance calculation: Please wait')
 tic
     %[~,avg_min_dist]=distmin_NN(pos);
-    %[avg_min_dist,~]=estimation_min_dist(pos);
-    avg_min_dist=max(avg_min_dist1,avg_min_dist2);
+   [avg_min_dist,~]=estimation_min_dist(pos);
+   % avg_min_dist=max(avg_min_dist1,avg_min_dist2);
 toc
 tic
 disp('Cluster calculation DBSCAN. Please wait')
 
-cidx = dbscan(pos,alpha*avg_min_dist,4);
+%cidx = dbscan(pos,alpha*avg_min_dist,4);
+cidx = dbscan(pos,RRR,4);
 M0=max(cidx);
 toc
 
@@ -48,30 +53,35 @@ eo=find(POSY(:,4)==2);
 cidx2=cidx(eo,:);
 
 %%%%%%%%%%%%%%%%%%%% Figure Parameter %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-pozycja1=[0.05, 0.3,0.9,0.65];
+pozycja1=[0.15, 0.3,0.7,0.60];
 pozycja2= [0.15, 0.05,0.7,0.15];
 scrsz = get(0,'ScreenSize');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure(100)
 whitebg('k')
-set(gcf,'Position',[scrsz(1)+200,scrsz(2)+70, scrsz(3)*0.6,scrsz(4)*0.83]);
+set(gcf,'Position',[scrsz(1)+600,scrsz(2)+70, scrsz(3)*0.6,scrsz(4)*0.83]);
 subplot('position',pozycja1)
 plot3(pos1(:,1),pos1(:,2),pos1(:,3),'.b','markersize',2)
 hold on
 plot3(pos2(:,1),pos2(:,2),pos2(:,3),'.r','markersize',2)
 view(2)
-axis image
+%axis image
 hh=text(2*min(pos1(:,1)),4*min(pos1(:,2))+1000, ['Cluster ',num2str(1),'/',num2str(10)],'color','k');
 aa=min(min(pos1(:,1)),min(pos2(:,1)));
 bb=max(max(pos1(:,1)),max(pos2(:,1)));
+cc=min(min(pos1(:,2)),min(pos2(:,2)));
+dd=max(max(pos1(:,2)),max(pos2(:,2)));
 
-%xlim([min(pos1(:,1)),max(pos1(:,1))+1000])
-xlim([aa,bb+1000])
+
+%ylim([cc,dd+1000])
+%xlim([aa,bb+1000])
+xlim([min(pos1(:,1)),max(pos1(:,1))+1000])
+ylim([min(pos1(:,2)),max(pos1(:,2))+1000])
 subplot('position',pozycja2)
 grid on
 hold on
 %ylim([0,110])
-title('Collocation size in %')
+title(['\rm SENSITIVE Collocation size in %. Sample 1 ',exname1,',  Sample 2 ',exname2])
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 e1=find(cidx1>0);
@@ -135,7 +145,7 @@ cid2centr(kk,2)=cent(:,1);
 cid2centr(kk,3)=cent(:,2);
 cid2centr(kk,4)=cent(:,3);
 
-%%%%%%%% nearest neighbor %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%% nearest neighbour %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
 WW=pdist2(cid2centr(kk,2:4),cid1centr(:,2:4));
 et=find(WW==min(WW),1,'first');
@@ -168,7 +178,8 @@ if exist('C000','var')==1
 trisurf(C000,hullo(:,1),hullo(:,2),hullo(:,3),'FaceColor','r','FaceAlpha',0.4)
 end
 end
-
+  title(['\rm SENSITIVE Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 : ',num2str(round(RRR)),' nm'])
 delete(hh)
 hh=text(2*min(pos1(:,1))+100,4*min(pos1(:,2))+1000, ['Cluster mobil ',num2str(kk),'/',num2str(M2)],'color','r');
 end
@@ -230,7 +241,7 @@ disp(['intersection search ',num2str(j),'/',num2str(size(Cl,1))])
      ve(5,1)= numel(e1);
      ve(6,1)=numel(e2);
      coloc=[coloc,ve];
-     
+  
     figure(100)
     subplot('position',pozycja1)
     trisurf(C1,hull1(:,1),hull1(:,2),hull1(:,3),'FaceColor','c','FaceAlpha',0.4)
@@ -239,8 +250,10 @@ disp(['intersection search ',num2str(j),'/',num2str(size(Cl,1))])
     plot3(hull2(:,1),hull2(:,2),hull2(:,3),'.w','markersize',6)
     plot3(hull2(:,1),hull2(:,2),hull2(:,3),'.r','markersize',4)
     grid on
-    title('Cluster collocations. White - clusters of sample 2 collocated to sample 1')
-    subplot('position',pozycja2)
+     title(['\rm SENSITIVE Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 : ',num2str(round(RRR)),' nm'])
+    
+     subplot('position',pozycja2)
     bar(j,ve(4,1),'r')
    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    
@@ -265,6 +278,7 @@ disp(['intersection search ',num2str(j),'/',num2str(size(Cl,1))])
      ve(5,1)= numel(e1);
      ve(6,1)=numel(e2);
      coloc=[coloc,ve];
+
      
     figure(100)
     subplot('position',pozycja1)
@@ -275,7 +289,9 @@ disp(['intersection search ',num2str(j),'/',num2str(size(Cl,1))])
     plot3(hull2(:,1),hull2(:,2),hull2(:,3),'.r','markersize',3)
     plot3(hull2(:,1),hull2(:,2),hull2(:,3),'-w','markersize',1,'linewidth',3.5)
     grid on
-    title('Cluster collocations. White - clusters of sample 2 collocated to sample 1')
+     title(['\rm SENSITIVE Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 : ',num2str(round(RRR)),' nm'])
+
     subplot('position',pozycja2)
     bar(j,ve(4,1),'r')
    
@@ -300,7 +316,7 @@ disp(['intersection search ',num2str(j),'/',num2str(size(Cl,1))])
      ve(5,1)= numel(e1);
      ve(6,1)=numel(e2);
      coloc=[coloc,ve];
-     
+    
     figure(100)
     subplot('position',pozycja1)
     trisurf(C2,hull2(:,1),hull2(:,2),hull2(:,3),'FaceColor','m','FaceAlpha',0.4)
@@ -310,18 +326,20 @@ disp(['intersection search ',num2str(j),'/',num2str(size(Cl,1))])
     plot3(hull1(:,1),hull1(:,2),hull1(:,3),'.b','markersize',3)
     plot3(hull1(:,1),hull1(:,2),hull1(:,3),'-w','markersize',1,'linewidth',3.5)
     grid on
-    title('Cluster collocations. White - clusters of sample 2 collocated to sample 1')
+  title(['\rm SENSITIVE Cluster collocations. White - clusters of sample 2 collocated to fix sample 1', ...
+           '\newline Radius for samples 1 and 2 : ',num2str(round(RRR)),' nm'])
+ 
     subplot('position',pozycja2)
     bar(j,ve(4,1),'r')
     end
     
-    
+    %%%% Glebokosc
     
     if overlapp==1
-      if cid2centr(e3,6)<=1.0*(cid2centr(e3,7)+cid2centr(e3,9))
+      if cid2centr(e3,6)<=1*(cid2centr(e3,7)+cid2centr(e3,9))  
             cid2centr(e3,5)=-cid2centr(e3,5);
             cid2centr(e3,6)=-cid2centr(e3,6);
-    end   
+      end   
    end   
 if Cl(j)==119
   %stop
@@ -334,12 +352,21 @@ ef=find(cid2centr(:,10)==1);
 cid2centr(ef,:)=[];
 ef=find(cid2centr(:,11)==1);
 cid2centr(ef,:)=[];
-
 tt=['col_fast_alph_',num2str(alpha),'.mat'];
 save(tt,'coloc','avg_min_dist','PCOL_2','M0','M1','M2');
 
 
 collocation_both_methods;
 
+crea.Interpreter='tex';
+crea.WindowStyle = 'modal';
+if isempty(coloc)==1
+uiwait(msgbox(['\fontsize{14}For radius ',num2str(round(RRR)),' nm  no collocation found. Try a larger radius'],crea))
+Answer_coll_typ;
+end
+
 A_excel_sensiv;
 A_excel_distance_sens;
+msgbox('\fontsize{12} The results of the collocation are saved in the current directory in excel format with prefix COLOCx',crea)
+
+%putzen;
